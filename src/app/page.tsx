@@ -13,6 +13,7 @@ import { PanelList } from "@/components/storyboard/panel-list";
 import { StoryboardPreview } from "@/components/storyboard/storyboard-preview";
 import { PromptPreview } from "@/components/prompt/prompt-preview";
 import { ExportPanel } from "@/components/export/export-panel";
+import { HotspotPanel } from "@/components/hotspot/hotspot-panel";
 import { Button } from "@/components/ui/button";
 import { WritingStyleSelector } from "@/components/story/writing-style-selector";
 import { Separator } from "@/components/ui/separator";
@@ -25,6 +26,7 @@ export default function Home() {
   const [storyStyle, setStoryStyle] = useState<StoryStyle>("搞笑");
   const [panelCount, setPanelCount] = useState(4);
   const [previewTab, setPreviewTab] = useState<"cards" | "export">("cards");
+  const [externalTopic, setExternalTopic] = useState<string | null>(null);
 
   const handleGenerate = (topic: string) => {
     actions.generateStory(topic, storyStyle);
@@ -32,6 +34,15 @@ export default function Home() {
 
   const handleExpand = (summary: string) => {
     actions.expandStory(summary, storyStyle);
+  };
+
+  const handleSelectAngle = (sampleTopic: string, style: string) => {
+    setExternalTopic(sampleTopic);
+    setStoryStyle(style as StoryStyle);
+  };
+
+  const handleTopicConsumed = () => {
+    setExternalTopic(null);
   };
 
   const handleContentChange = (content: string) => {
@@ -57,6 +68,11 @@ export default function Home() {
       <Header onReset={actions.reset} />
 
       <main className="mx-auto max-w-2xl space-y-6 p-6">
+        {/* Step 0: Hotspot Radar */}
+        <StepCard title="热点雷达" step={0} badge="A1/A2">
+          <HotspotPanel onSelectAngle={handleSelectAngle} />
+        </StepCard>
+
         {/* Step 1: Story Generation */}
         <StepCard title="故事生成" step={1} badge="B1/B2">
           <div className="space-y-4">
@@ -68,6 +84,8 @@ export default function Home() {
             <Separator />
             <StoryInput
               style={storyStyle}
+              externalTopic={externalTopic}
+              onTopicConsumed={handleTopicConsumed}
               onGenerate={handleGenerate}
               onExpand={handleExpand}
               isLoading={state.isGeneratingStory}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Sparkles, Wand2 } from "lucide-react";
@@ -8,6 +8,8 @@ import type { StoryStyle } from "@/types/story";
 
 interface StoryInputProps {
   style: StoryStyle;
+  externalTopic?: string | null;
+  onTopicConsumed?: () => void;
   onGenerate: (topic: string) => void;
   onExpand: (summary: string) => void;
   isLoading: boolean;
@@ -17,6 +19,8 @@ interface StoryInputProps {
 
 export function StoryInput({
   style,
+  externalTopic,
+  onTopicConsumed,
   onGenerate,
   onExpand,
   isLoading,
@@ -24,6 +28,13 @@ export function StoryInput({
   disabled,
 }: StoryInputProps) {
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    if (externalTopic) {
+      setInput(externalTopic);
+      onTopicConsumed?.();
+    }
+  }, [externalTopic, onTopicConsumed]);
   const [mode, setMode] = useState<"generate" | "expand">("generate");
 
   const handleSubmit = () => {
