@@ -13,9 +13,10 @@ export async function generateStory(
     wordCount?: number;
   },
   apiKey?: string,
-  model?: string
+  model?: string,
+  baseUrl?: string
 ): Promise<Story> {
-  const client = createAIClient(apiKey, model);
+  const client = createAIClient(apiKey, model, baseUrl);
   const prompt = buildStoryPrompt(params);
 
   let lastError: Error | null = null;
@@ -43,9 +44,10 @@ export async function expandStory(
     wordCount?: number;
   },
   apiKey?: string,
-  model?: string
+  model?: string,
+  baseUrl?: string
 ): Promise<Story> {
-  const client = createAIClient(apiKey, model);
+  const client = createAIClient(apiKey, model, baseUrl);
   const prompt = buildExpandPrompt(params);
 
   let lastError: Error | null = null;

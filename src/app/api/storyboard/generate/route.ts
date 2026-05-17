@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateStoryboard } from "@/lib/services/storyboard-service";
-import { getApiKeyFromRequest, getModelFromRequest } from "@/lib/utils/server-cookies";
+import { getApiKeyFromRequest, getModelFromRequest, getBaseUrlFromRequest } from "@/lib/utils/server-cookies";
 import type { Character } from "@/types/character";
 
 export async function POST(request: NextRequest) {
@@ -35,7 +35,8 @@ export async function POST(request: NextRequest) {
         panelCount: count,
       },
       getApiKeyFromRequest(request),
-      getModelFromRequest(request)
+      getModelFromRequest(request),
+      getBaseUrlFromRequest(request)
     );
 
     return NextResponse.json({ success: true, data: { storyboard } });

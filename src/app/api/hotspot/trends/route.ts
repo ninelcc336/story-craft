@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchTrends } from "@/lib/services/hotspot-service";
-import { getApiKeyFromRequest, getModelFromRequest } from "@/lib/utils/server-cookies";
+import { getApiKeyFromRequest, getModelFromRequest, getBaseUrlFromRequest } from "@/lib/utils/server-cookies";
 import type { HotspotCategory } from "@/types/hotspot";
 
 export async function GET(request: NextRequest) {
@@ -21,7 +21,8 @@ export async function GET(request: NextRequest) {
     const trends = await fetchTrends(
       category || undefined,
       getApiKeyFromRequest(request),
-      getModelFromRequest(request)
+      getModelFromRequest(request),
+      getBaseUrlFromRequest(request)
     );
 
     return NextResponse.json({ success: true, data: { trends } });

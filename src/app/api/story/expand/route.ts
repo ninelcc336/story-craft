@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { expandStory } from "@/lib/services/story-service";
-import { getApiKeyFromRequest, getModelFromRequest } from "@/lib/utils/server-cookies";
+import { getApiKeyFromRequest, getModelFromRequest, getBaseUrlFromRequest } from "@/lib/utils/server-cookies";
 import type { StoryStyle } from "@/types/story";
 
 export async function POST(request: NextRequest) {
@@ -46,7 +46,8 @@ export async function POST(request: NextRequest) {
         wordCount: wordCount || 600,
       },
       getApiKeyFromRequest(request),
-      getModelFromRequest(request)
+      getModelFromRequest(request),
+      getBaseUrlFromRequest(request)
     );
 
     return NextResponse.json({ success: true, data: { story } });

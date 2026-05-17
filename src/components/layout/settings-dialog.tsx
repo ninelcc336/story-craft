@@ -21,6 +21,7 @@ export function SettingsDialog({ open, onClose }: SettingsDialogProps) {
     apiKey: "",
     provider: "claude",
     model: "claude-sonnet-4-6",
+    baseUrl: "",
   });
   const [showKey, setShowKey] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -139,6 +140,25 @@ export function SettingsDialog({ open, onClose }: SettingsDialogProps) {
             />
             <p className="mt-1 text-xs text-gray-400">
               输入模型名称，例如 claude-sonnet-4-6 / gpt-4o / deepseek-v3 等
+            </p>
+          </div>
+
+          {/* Base URL */}
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-gray-700">
+              Base URL（可选）
+            </label>
+            <Input
+              type="text"
+              value={settings.baseUrl}
+              onChange={(e) =>
+                setSettings({ ...settings, baseUrl: e.target.value })
+              }
+              placeholder="https://api.example.com/v1"
+              className="font-mono text-sm"
+            />
+            <p className="mt-1 text-xs text-gray-400">
+              自定义 API 地址，用于代理或兼容接口。留空使用默认地址
             </p>
           </div>
 

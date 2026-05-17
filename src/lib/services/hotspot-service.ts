@@ -10,9 +10,10 @@ import type { HotTopic, StoryAngle, HotspotCategory } from "@/types/hotspot";
 export async function fetchTrends(
   category?: HotspotCategory,
   apiKey?: string,
-  model?: string
+  model?: string,
+  baseUrl?: string
 ): Promise<HotTopic[]> {
-  const client = createAIClient(apiKey, model);
+  const client = createAIClient(apiKey, model, baseUrl);
   const prompt = buildTrendsPrompt(category);
 
   let lastError: Error | null = null;
@@ -36,9 +37,10 @@ export async function fetchTrends(
 export async function recommendAngles(
   topic: HotTopic,
   apiKey?: string,
-  model?: string
+  model?: string,
+  baseUrl?: string
 ): Promise<StoryAngle[]> {
-  const client = createAIClient(apiKey, model);
+  const client = createAIClient(apiKey, model, baseUrl);
   const prompt = buildAnglesPrompt(topic);
 
   let lastError: Error | null = null;

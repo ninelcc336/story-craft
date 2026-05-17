@@ -1,53 +1,46 @@
 "use client";
 
 const SETTINGS_KEY = "storycraft-settings";
-const COOKIE_KEY = "storycraft_api_key";
 
 export interface LLMSettings {
   apiKey: string;
   provider: "claude" | "openai";
   model: string;
+  baseUrl: string;
 }
-
-const DEFAULT_MODELS: Record<LLMSettings["provider"], string> = {
-  claude: "claude-sonnet-4-6",
-  openai: "gpt-4o",
-};
 
 export function loadSettings(): LLMSettings {
   if (typeof window === "undefined") {
-    return { apiKey: "", provider: "claude", model: "claude-sonnet-4-6" };
+    return { apiKey: "", provider: "claude", model: "claude-sonnet-4-6", baseUrl: "" };
   }
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
-    if (!raw) return { apiKey: "", provider: "claude", model: DEFAULT_MODELS["claude"] };
+    if (!raw) return { apiKey: "", provider: "claude", model: "claude-sonnet-4-6", baseUrl: "" };
     const parsed = JSON.parse(raw);
-    const provider: LLMSettings["provider"] =
-      parsed.provider === "openai" ? "openai" : "claude";
     return {
       apiKey: parsed.apiKey || "",
-      provider,
-      model: parsed.model || DEFAULT_MODELS[provider],
+      provider: parsed.provider === "openai" ? "openai" : "claude",
+      model: parsed.model || "claude-sonnet-4-6",
+      baseUrl: parsed.baseUrl || "",
     };
   } catch {
-    return { apiKey: "", provider: "claude", model: DEFAULT_MODELS["claude"] };
+    return { apiKey: "", provider: "claude", model: "claude-sonnet-4-6", baseUrl: "" };
   }
+}
+
+function setCookie(name: string, value: string): void {
+  if (typeof window === "undefined") return;
+  document.cookie = `${name}=${encodeURIComponent(value)};path=/;max-age=2592000;SameSite=Lax`;
 }
 
 export function saveSettings(settings: LLMSettings): void {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-    // Also set cookie for server-side access
-    if (settings.apiKey) {
-      document.cookie = `${COOKIE_KEY}=${encodeURIComponent(settings.apiKey)};path=/;max-age=2592000;SameSite=Lax`;
-    }
-    if (settings.provider) {
-      document.cookie = `storycraft_provider=${settings.provider};path=/;max-age=2592000;SameSite=Lax`;
-    }
-    if (settings.model) {
-      document.cookie = `storycraft_model=${encodeURIComponent(settings.model)};path=/;max-age=2592000;SameSite=Lax`;
-    }
+    setCookie("storycraft_api_key", settings.apiKey);
+    setCookie("storycraft_provider", settings.provider);
+    setCookie("storycraft_model", settings.model);
+    setCookie("storycraft_base_url", settings.baseUrl);
   } catch {
     // silently fail
   }
@@ -60,8 +53,4 @@ export function hasValidApiKey(): boolean {
     settings.apiKey.length > 10 &&
     settings.apiKey !== "sk-ant-..."
   );
-}
-
-export function getSettingsForAPI(): LLMSettings {
-  return loadSettings();
 }

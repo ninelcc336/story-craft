@@ -16,9 +16,10 @@ export async function generateStoryboard(
     panelCount: number;
   },
   apiKey?: string,
-  model?: string
+  model?: string,
+  baseUrl?: string
 ): Promise<StoryboardScript> {
-  const client = createAIClient(apiKey, model);
+  const client = createAIClient(apiKey, model, baseUrl);
   const prompt = buildStoryboardPrompt(params);
 
   let lastError: Error | null = null;
@@ -45,9 +46,10 @@ export async function restyleStoryboard(
     writingStyle: WritingStyle;
   },
   apiKey?: string,
-  model?: string
+  model?: string,
+  baseUrl?: string
 ): Promise<Record<string, { text: string }>> {
-  const client = createAIClient(apiKey, model);
+  const client = createAIClient(apiKey, model, baseUrl);
   const prompt = buildRestylePrompt(params);
 
   let lastError: Error | null = null;

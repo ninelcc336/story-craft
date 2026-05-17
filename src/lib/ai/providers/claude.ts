@@ -5,14 +5,16 @@ export class ClaudeProvider implements AIProvider {
   private client: Anthropic;
   private model: string;
 
-  constructor(apiKey?: string, model?: string) {
+  constructor(apiKey?: string, model?: string, baseUrl?: string) {
     const key = apiKey || process.env.ANTHROPIC_API_KEY;
     if (!key || key === "sk-ant-..." || key.length < 10) {
       throw new Error(
-        "API Key 未配置。请点击右上角齿轮图标配置 Anthropic API Key。"
+        "API Key 未配置。请点击右上角齿轮图标配置 API Key。"
       );
     }
-    this.client = new Anthropic({ apiKey: key });
+    const opts: Record<string, unknown> = { apiKey: key };
+    if (baseUrl) opts.baseURL = baseUrl;
+    this.client = new Anthropic(opts as unknown as { apiKey: string });
     this.model = model || "claude-sonnet-4-6";
   }
 

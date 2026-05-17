@@ -15,3 +15,9 @@ export function getModelFromRequest(request: NextRequest): string {
   if (cookie) return decodeURIComponent(cookie);
   return "claude-sonnet-4-6";
 }
+
+export function getBaseUrlFromRequest(request: NextRequest): string {
+  const cookie = request.cookies.get("storycraft_base_url")?.value;
+  if (cookie) return decodeURIComponent(cookie);
+  return "";
+}

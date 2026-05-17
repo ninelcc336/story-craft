@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { restyleStoryboard } from "@/lib/services/storyboard-service";
-import { getApiKeyFromRequest, getModelFromRequest } from "@/lib/utils/server-cookies";
+import { getApiKeyFromRequest, getModelFromRequest, getBaseUrlFromRequest } from "@/lib/utils/server-cookies";
 import type { WritingStyle } from "@/types/story";
 
 export async function POST(request: NextRequest) {
@@ -29,7 +29,8 @@ export async function POST(request: NextRequest) {
     const result = await restyleStoryboard(
       { panels, writingStyle },
       getApiKeyFromRequest(request),
-      getModelFromRequest(request)
+      getModelFromRequest(request),
+      getBaseUrlFromRequest(request)
     );
 
     return NextResponse.json({ success: true, data: { panels: result } });
