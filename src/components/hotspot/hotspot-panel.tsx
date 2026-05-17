@@ -167,6 +167,8 @@ export function HotspotPanel({ onSelectAngle }: HotspotPanelProps) {
               angles={angles}
               isSelected={selectedAngleId || undefined}
               onSelect={handleSelectAngle}
+              onRefresh={() => fetchAngles(selectedTopic)}
+              isRefreshing={isLoadingAngles}
             />
           )}
         </>

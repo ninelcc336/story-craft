@@ -10,16 +10,33 @@ interface AngleListProps {
   angles: StoryAngle[];
   isSelected?: string;
   onSelect: (angle: StoryAngle) => void;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
   disabled?: boolean;
 }
 
-export function AngleList({ angles, isSelected, onSelect, disabled }: AngleListProps) {
+export function AngleList({ angles, isSelected, onSelect, onRefresh, isRefreshing, disabled }: AngleListProps) {
   return (
     <div className="space-y-2">
-      <p className="flex items-center gap-1 text-xs font-medium text-gray-500">
-        <Sparkles className="h-3 w-3" />
-        AI 推荐的故事切入角度
-      </p>
+      <div className="flex items-center justify-between">
+        <p className="flex items-center gap-1 text-xs font-medium text-gray-500">
+          <Sparkles className="h-3 w-3" />
+          AI 推荐的故事切入角度
+        </p>
+        {onRefresh && (
+          <button
+            onClick={onRefresh}
+            disabled={isRefreshing || disabled}
+            className="flex items-center gap-1 rounded px-2 py-0.5 text-xs text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 disabled:opacity-50"
+          >
+            {isRefreshing ? (
+              <>刷新中...</>
+            ) : (
+              <>🔄 换一批</>
+            )}
+          </button>
+        )}
+      </div>
       {angles.map((angle) => {
         const selected = isSelected === angle.id;
         const styleLabel = STORY_STYLES.find(
