@@ -1,0 +1,56 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - heading "StoryCraft AI故事工坊" [level=1] [ref=e5]
+        - paragraph [ref=e6]: AI故事图文创作助手 · Phase 2
+      - generic [ref=e7]:
+        - button "LLM 配置" [ref=e8] [cursor=pointer]:
+          - img [ref=e9]
+        - button "新建项目" [ref=e12] [cursor=pointer]
+    - generic [ref=e14]:
+      - paragraph [ref=e15]: ⚠️ 尚未配置 LLM API Key，请点击右上角齿轮图标 ⚙ 进行配置后使用 AI 功能
+      - button "去配置" [ref=e16] [cursor=pointer]
+    - navigation [ref=e17]:
+      - generic [ref=e18]:
+        - button "热点 ✓" [ref=e19] [cursor=pointer]:
+          - img [ref=e20]
+          - text: 热点
+          - generic [ref=e22]: ✓
+        - button "故事" [active] [ref=e23] [cursor=pointer]:
+          - img [ref=e24]
+          - text: 故事
+        - button "角色" [disabled] [ref=e27]:
+          - img [ref=e28]
+          - text: 角色
+        - button "分镜" [disabled] [ref=e31]:
+          - img [ref=e32]
+          - text: 分镜
+        - button "导出" [disabled] [ref=e34]:
+          - img [ref=e35]
+          - text: 导出
+    - main [ref=e38]:
+      - generic [ref=e70]:
+        - heading "故事生成" [level=2] [ref=e71]:
+          - img [ref=e72]
+          - text: 故事生成
+        - generic [ref=e75]:
+          - button "🤗 温情" [ref=e76] [cursor=pointer]
+          - button "🕵️ 悬疑" [ref=e77] [cursor=pointer]
+          - button "😂 搞笑" [ref=e78] [cursor=pointer]
+          - button "🌿 治愈" [ref=e79] [cursor=pointer]
+          - button "🔥 励志" [ref=e80] [cursor=pointer]
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - button "主题生成" [ref=e84] [cursor=pointer]:
+              - img [ref=e85]
+              - text: 主题生成
+            - button "梗概扩展" [ref=e87] [cursor=pointer]:
+              - img [ref=e88]
+              - text: 梗概扩展
+          - textbox "输入故事主题，例如：一只猫在城市里冒险..." [ref=e91]
+          - generic [ref=e92]:
+            - generic [ref=e93]: 当前风格：搞笑 · Ctrl+Enter 生成
+            - button "生成故事" [disabled]
+        - generic [ref=e94]: 请先输入主题，然后点击"生成故事"
+  - alert [ref=e69]

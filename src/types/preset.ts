@@ -6,4 +6,5 @@ export interface VisualStyle {
   backgroundStyle: string;
   keywords: string;
   suitableFor: string;
+  previewColors: string[];
 }

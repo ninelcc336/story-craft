@@ -42,6 +42,13 @@ export function StylePresetSelector({
               disabled && "cursor-not-allowed opacity-50"
             )}
           >
+            {/* Color Preview Bar */}
+            <div
+              className="mb-2 h-2 w-full rounded"
+              style={{
+                background: `linear-gradient(to right, ${preset.previewColors.join(", ")})`,
+              }}
+            />
             <div className="mb-1 text-sm font-medium text-gray-800">
               {preset.name}
             </div>
