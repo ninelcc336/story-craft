@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generatePromptImages } from "@/lib/services/prompt-service";
+import { getApiKeyFromRequest, getModelFromRequest } from "@/lib/utils/server-cookies";
 import type { StoryboardScript } from "@/types/storyboard";
 
 export async function POST(request: NextRequest) {
@@ -22,7 +23,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const prompt = await generatePromptImages(storyboard);
+    const prompt = await generatePromptImages(
+      storyboard,
+      getApiKeyFromRequest(request),
+      getModelFromRequest(request)
+    );
 
     return NextResponse.json({ success: true, data: { prompt } });
   } catch (error) {

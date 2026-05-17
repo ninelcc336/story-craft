@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateStoryboard } from "@/lib/services/storyboard-service";
+import { getApiKeyFromRequest, getModelFromRequest } from "@/lib/utils/server-cookies";
 import type { Character } from "@/types/character";
 
 export async function POST(request: NextRequest) {
@@ -27,11 +28,15 @@ export async function POST(request: NextRequest) {
         ? panelCount
         : 4;
 
-    const storyboard = await generateStoryboard({
-      story: story.trim(),
-      character: character || { name: "", appearance: "", personality: "" },
-      panelCount: count,
-    });
+    const storyboard = await generateStoryboard(
+      {
+        story: story.trim(),
+        character: character || { name: "", appearance: "", personality: "" },
+        panelCount: count,
+      },
+      getApiKeyFromRequest(request),
+      getModelFromRequest(request)
+    );
 
     return NextResponse.json({ success: true, data: { storyboard } });
   } catch (error) {

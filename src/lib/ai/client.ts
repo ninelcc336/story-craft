@@ -3,12 +3,12 @@ import { ClaudeProvider } from "./providers/claude";
 
 export type { AIProvider };
 
-export function createAIClient(): AIProvider {
-  const provider = process.env.AI_PROVIDER || "claude";
+function getServerApiKey(): string {
+  // Server-side: read from process.env (fallback)
+  return process.env.ANTHROPIC_API_KEY || "";
+}
 
-  switch (provider) {
-    case "claude":
-    default:
-      return new ClaudeProvider();
-  }
+export function createAIClient(apiKey?: string, model?: string): AIProvider {
+  const key = apiKey || getServerApiKey();
+  return new ClaudeProvider(key, model);
 }

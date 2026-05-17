@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useStoryContext, useStoryActions } from "@/lib/store/story-context";
+import { hasValidApiKey } from "@/lib/store/settings-store";
 import type { StoryStyle } from "@/types/story";
 import { Header } from "@/components/layout/header";
 import { StepCard } from "@/components/layout/pipeline-layout";
@@ -71,6 +72,27 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header onReset={actions.reset} />
+
+      {/* No API Key Warning */}
+      {!hasValidApiKey() && (
+        <div className="border-b border-amber-200 bg-amber-50 px-6 py-3">
+          <div className="mx-auto max-w-2xl flex items-center justify-between">
+            <p className="text-sm text-amber-800">
+              ⚠️ 尚未配置 LLM API Key，请点击右上角齿轮图标{" "}
+              <span className="font-medium">⚙</span> 进行配置后使用 AI 功能
+            </p>
+            <button
+              onClick={() => {
+                const btn = document.querySelector('[title="LLM 配置"]') as HTMLButtonElement;
+                btn?.click();
+              }}
+              className="shrink-0 rounded bg-amber-200 px-3 py-1 text-xs font-medium text-amber-800 hover:bg-amber-300"
+            >
+              去配置
+            </button>
+          </div>
+        </div>
+      )}
 
       <main className="mx-auto max-w-2xl space-y-6 p-6">
         {/* Step 0: Hotspot Radar */}

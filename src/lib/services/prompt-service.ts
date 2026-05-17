@@ -6,9 +6,11 @@ import {
 import type { StoryboardScript } from "@/types/storyboard";
 
 export async function generatePromptImages(
-  storyboard: StoryboardScript
+  storyboard: StoryboardScript,
+  apiKey?: string,
+  model?: string
 ): Promise<StoryboardScript> {
-  const client = createAIClient();
+  const client = createAIClient(apiKey, model);
   const prompt = buildPromptForPanels(storyboard);
 
   let lastError: Error | null = null;

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { recommendAngles } from "@/lib/services/hotspot-service";
+import { getApiKeyFromRequest, getModelFromRequest } from "@/lib/utils/server-cookies";
 import type { HotTopic } from "@/types/hotspot";
 
 export async function POST(request: NextRequest) {
@@ -18,7 +19,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const angles = await recommendAngles(topic);
+    const angles = await recommendAngles(
+      topic,
+      getApiKeyFromRequest(request),
+      getModelFromRequest(request)
+    );
 
     return NextResponse.json({ success: true, data: { angles } });
   } catch (error) {

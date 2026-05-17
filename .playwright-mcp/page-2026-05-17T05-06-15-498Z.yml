@@ -1,0 +1,32 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - heading "StoryCraft AI故事工坊" [level=1] [ref=e5]
+      - paragraph [ref=e6]: AI故事图文创作助手 · Phase 1
+    - button "新建项目" [ref=e8]
+  - main [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - text: "1"
+        - heading "故事生成" [level=3] [ref=e12]
+        - generic [ref=e13]: B1/B2
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - button "🤗 温情" [ref=e17]
+          - button "🕵️ 悬疑" [ref=e18]
+          - button "😂 搞笑" [ref=e19]
+          - button "🌿 治愈" [ref=e20]
+          - button "🔥 励志" [ref=e21]
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - button "主题生成" [ref=e24]:
+              - img [ref=e25]
+              - text: 主题生成
+            - button "梗概扩展" [ref=e27]:
+              - img [ref=e28]
+              - text: 梗概扩展
+          - textbox "输入故事主题，例如：一只猫在城市里冒险..." [ref=e31]
+          - generic [ref=e32]:
+            - text: 当前风格：搞笑 · Ctrl+Enter 生成
+            - button "生成故事" [disabled] [ref=e33]
+        - generic [ref=e34]: 请先输入主题，然后点击"生成故事"

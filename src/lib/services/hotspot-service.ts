@@ -7,8 +7,12 @@ import {
 } from "@/lib/ai/prompts/hotspot";
 import type { HotTopic, StoryAngle, HotspotCategory } from "@/types/hotspot";
 
-export async function fetchTrends(category?: HotspotCategory): Promise<HotTopic[]> {
-  const client = createAIClient();
+export async function fetchTrends(
+  category?: HotspotCategory,
+  apiKey?: string,
+  model?: string
+): Promise<HotTopic[]> {
+  const client = createAIClient(apiKey, model);
   const prompt = buildTrendsPrompt(category);
 
   let lastError: Error | null = null;
@@ -29,8 +33,12 @@ export async function fetchTrends(category?: HotspotCategory): Promise<HotTopic[
   throw lastError || new Error("热点获取失败");
 }
 
-export async function recommendAngles(topic: HotTopic): Promise<StoryAngle[]> {
-  const client = createAIClient();
+export async function recommendAngles(
+  topic: HotTopic,
+  apiKey?: string,
+  model?: string
+): Promise<StoryAngle[]> {
+  const client = createAIClient(apiKey, model);
   const prompt = buildAnglesPrompt(topic);
 
   let lastError: Error | null = null;

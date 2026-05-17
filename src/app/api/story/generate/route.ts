@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateStory } from "@/lib/services/story-service";
+import { getApiKeyFromRequest, getModelFromRequest } from "@/lib/utils/server-cookies";
 import type { StoryStyle } from "@/types/story";
 
 export async function POST(request: NextRequest) {
@@ -30,11 +31,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const story = await generateStory({
-      topic: topic.trim(),
-      style,
-      wordCount: wordCount || 600,
-    });
+    const story = await generateStory(
+      {
+        topic: topic.trim(),
+        style,
+        wordCount: wordCount || 600,
+      },
+      getApiKeyFromRequest(request),
+      getModelFromRequest(request)
+    );
 
     return NextResponse.json({ success: true, data: { story } });
   } catch (error) {

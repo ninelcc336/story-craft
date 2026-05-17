@@ -3,15 +3,17 @@ import type { AIProvider } from "./types";
 
 export class ClaudeProvider implements AIProvider {
   private client: Anthropic;
+  private model: string;
 
-  constructor() {
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey || apiKey === "sk-ant-...") {
+  constructor(apiKey?: string, model?: string) {
+    const key = apiKey || process.env.ANTHROPIC_API_KEY;
+    if (!key || key === "sk-ant-..." || key.length < 10) {
       throw new Error(
-        "ANTHROPIC_API_KEY 未配置。请在 .env.local 中设置有效的 API Key。"
+        "API Key 未配置。请点击右上角齿轮图标配置 Anthropic API Key。"
       );
     }
-    this.client = new Anthropic({ apiKey });
+    this.client = new Anthropic({ apiKey: key });
+    this.model = model || "claude-sonnet-4-6";
   }
 
   async generateCompletion(
@@ -19,7 +21,7 @@ export class ClaudeProvider implements AIProvider {
     options?: { maxTokens?: number; temperature?: number }
   ): Promise<string> {
     const response = await this.client.messages.create({
-      model: "claude-sonnet-4-6",
+      model: this.model,
       max_tokens: options?.maxTokens ?? 4096,
       temperature: options?.temperature ?? 0.7,
       system:

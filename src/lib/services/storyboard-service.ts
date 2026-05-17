@@ -9,12 +9,16 @@ import type { StoryboardScript } from "@/types/storyboard";
 import type { WritingStyle } from "@/types/story";
 import * as yaml from "js-yaml";
 
-export async function generateStoryboard(params: {
-  story: string;
-  character: Character;
-  panelCount: number;
-}): Promise<StoryboardScript> {
-  const client = createAIClient();
+export async function generateStoryboard(
+  params: {
+    story: string;
+    character: Character;
+    panelCount: number;
+  },
+  apiKey?: string,
+  model?: string
+): Promise<StoryboardScript> {
+  const client = createAIClient(apiKey, model);
   const prompt = buildStoryboardPrompt(params);
 
   let lastError: Error | null = null;
@@ -35,11 +39,15 @@ export async function generateStoryboard(params: {
   throw lastError || new Error("分镜生成失败");
 }
 
-export async function restyleStoryboard(params: {
-  panels: Record<string, { text: string }>;
-  writingStyle: WritingStyle;
-}): Promise<Record<string, { text: string }>> {
-  const client = createAIClient();
+export async function restyleStoryboard(
+  params: {
+    panels: Record<string, { text: string }>;
+    writingStyle: WritingStyle;
+  },
+  apiKey?: string,
+  model?: string
+): Promise<Record<string, { text: string }>> {
+  const client = createAIClient(apiKey, model);
   const prompt = buildRestylePrompt(params);
 
   let lastError: Error | null = null;

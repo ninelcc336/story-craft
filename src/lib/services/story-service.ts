@@ -6,12 +6,16 @@ import {
 } from "@/lib/ai/prompts/story";
 import type { StoryStyle, Story } from "@/types/story";
 
-export async function generateStory(params: {
-  topic: string;
-  style: StoryStyle;
-  wordCount?: number;
-}): Promise<Story> {
-  const client = createAIClient();
+export async function generateStory(
+  params: {
+    topic: string;
+    style: StoryStyle;
+    wordCount?: number;
+  },
+  apiKey?: string,
+  model?: string
+): Promise<Story> {
+  const client = createAIClient(apiKey, model);
   const prompt = buildStoryPrompt(params);
 
   let lastError: Error | null = null;
@@ -32,12 +36,16 @@ export async function generateStory(params: {
   throw lastError || new Error("故事生成失败");
 }
 
-export async function expandStory(params: {
-  summary: string;
-  style: StoryStyle;
-  wordCount?: number;
-}): Promise<Story> {
-  const client = createAIClient();
+export async function expandStory(
+  params: {
+    summary: string;
+    style: StoryStyle;
+    wordCount?: number;
+  },
+  apiKey?: string,
+  model?: string
+): Promise<Story> {
+  const client = createAIClient(apiKey, model);
   const prompt = buildExpandPrompt(params);
 
   let lastError: Error | null = null;

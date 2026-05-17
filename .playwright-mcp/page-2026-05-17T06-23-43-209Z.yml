@@ -1,0 +1,56 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - heading "StoryCraft AI故事工坊" [level=1] [ref=e5]
+      - paragraph [ref=e6]: AI故事图文创作助手 · Phase 1
+    - button "新建项目" [ref=e8] [cursor=pointer]
+  - main [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]: "0"
+        - heading "热点雷达" [level=3] [ref=e13]
+        - generic [ref=e14]: A1/A2
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]:
+            - img [ref=e19]
+            - generic [ref=e22]: 热点雷达
+          - generic [ref=e23]:
+            - generic [ref=e24]:
+              - button "全部" [ref=e25] [cursor=pointer]
+              - button "情感" [ref=e26] [cursor=pointer]
+              - button "职场" [ref=e27] [cursor=pointer]
+              - button "育儿" [ref=e28] [cursor=pointer]
+              - button "宠物" [ref=e29] [cursor=pointer]
+              - button "社会" [ref=e30] [cursor=pointer]
+            - button "刷新热点" [ref=e31] [cursor=pointer]:
+              - img [ref=e32]
+              - text: 刷新热点
+        - generic [ref=e38]:
+          - paragraph [ref=e39]: 点击"刷新热点"获取当前热门话题
+          - paragraph [ref=e40]: AI 将分析各平台热搜并推荐适合故事化创作的话题
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e43]: "1"
+        - heading "故事生成" [level=3] [ref=e44]
+        - generic [ref=e45]: B1/B2
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - button "🤗 温情" [ref=e49] [cursor=pointer]
+          - button "🕵️ 悬疑" [ref=e50] [cursor=pointer]
+          - button "😂 搞笑" [ref=e51] [cursor=pointer]
+          - button "🌿 治愈" [ref=e52] [cursor=pointer]
+          - button "🔥 励志" [ref=e53] [cursor=pointer]
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - button "主题生成" [ref=e57] [cursor=pointer]:
+              - img [ref=e58]
+              - text: 主题生成
+            - button "梗概扩展" [ref=e60] [cursor=pointer]:
+              - img [ref=e61]
+              - text: 梗概扩展
+          - textbox "输入故事主题，例如：一只猫在城市里冒险..." [ref=e64]
+          - generic [ref=e65]:
+            - generic [ref=e66]: 当前风格：搞笑 · Ctrl+Enter 生成
+            - button "生成故事" [disabled]
+        - generic [ref=e67]: 请先输入主题，然后点击"生成故事"
