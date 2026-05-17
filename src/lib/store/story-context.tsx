@@ -272,13 +272,17 @@ export function useStoryActions() {
   );
 
   const restylePanels = useCallback(
-    async (writingStyle: WritingStyle) => {
+    async (panels: Record<string, { text: string }>, writingStyle: WritingStyle) => {
       dispatch({ type: "SET_RESTYLING", payload: true });
       try {
+        const panelTexts: Record<string, { text: string }> = {};
+        for (const [key, panel] of Object.entries(panels)) {
+          panelTexts[key] = { text: panel.text };
+        }
         const res = await fetch("/api/storyboard/restyle", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ panels: {}, writingStyle }),
+          body: JSON.stringify({ panels: panelTexts, writingStyle }),
         });
         if (res.ok) {
           const json = await res.json();

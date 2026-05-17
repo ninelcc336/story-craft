@@ -12,8 +12,10 @@ import { CharacterEditor } from "@/components/character/character-editor";
 import { PanelList } from "@/components/storyboard/panel-list";
 import { StoryboardPreview } from "@/components/storyboard/storyboard-preview";
 import { Button } from "@/components/ui/button";
+import { WritingStyleSelector } from "@/components/story/writing-style-selector";
 import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
+import type { WritingStyle } from "@/types/story";
 
 export default function Home() {
   const { state, dispatch } = useStoryContext();
@@ -178,6 +180,19 @@ export default function Home() {
                   ) : (
                     <StoryboardPreview storyboard={state.storyboard} />
                   )}
+
+                  <Separator />
+
+                  <WritingStyleSelector
+                    value={null}
+                    onChange={(writingStyle: WritingStyle) =>
+                      actions.restylePanels(
+                        state.storyboard!.panels,
+                        writingStyle
+                      )
+                    }
+                    disabled={state.isRestyling}
+                  />
                 </div>
               )}
             </div>
