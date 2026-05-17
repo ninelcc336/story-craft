@@ -11,6 +11,8 @@ import { StoryDisplay } from "@/components/story/story-display";
 import { CharacterEditor } from "@/components/character/character-editor";
 import { PanelList } from "@/components/storyboard/panel-list";
 import { StoryboardPreview } from "@/components/storyboard/storyboard-preview";
+import { PromptPreview } from "@/components/prompt/prompt-preview";
+import { ExportPanel } from "@/components/export/export-panel";
 import { Button } from "@/components/ui/button";
 import { WritingStyleSelector } from "@/components/story/writing-style-selector";
 import { Separator } from "@/components/ui/separator";
@@ -199,11 +201,57 @@ export default function Home() {
           </StepCard>
         )}
 
-        {/* Step 4: Prompt & Export - placeholder */}
+        {/* Step 4: Prompt Generation + Agent Export */}
         {state.storyboard && (
-          <StepCard title="提示词导出" step={4} badge="C1/C2">
-            <div className="rounded-lg border border-dashed border-gray-200 py-8 text-center text-sm text-gray-400">
-              提示词生成和 Agent 适配导出即将接入...
+          <StepCard title="提示词生成 & 导出" step={4} badge="C1/C2">
+            <div className="space-y-4">
+              {/* C1: Generate Image Prompts */}
+              {!state.structuredPrompt ? (
+                <>
+                  <p className="text-sm text-gray-500">
+                    为每个分镜生成完整的 AI 生图提示词（image_prompt），融合角色外貌、风格、场景和动作描述
+                  </p>
+                  <Button
+                    onClick={() =>
+                      actions.generatePrompt(state.storyboard!)
+                    }
+                    disabled={state.isGeneratingPrompt}
+                    className="w-full"
+                    size="lg"
+                  >
+                    {state.isGeneratingPrompt ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        AI 正在生成生图提示词...
+                      </>
+                    ) : (
+                      "生成生图提示词"
+                    )}
+                  </Button>
+                  {state.promptError && (
+                    <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                      {state.promptError}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <PromptPreview
+                    prompt={state.structuredPrompt}
+                    isLoading={state.isGeneratingPrompt}
+                    error={state.promptError}
+                  />
+
+                  <Separator />
+
+                  {/* C2: Agent Adapter Export */}
+                  <ExportPanel
+                    prompt={state.structuredPrompt}
+                    selectedAdapter={state.selectedAdapter}
+                    onAdapterChange={actions.setAdapter}
+                  />
+                </>
+              )}
             </div>
           </StepCard>
         )}
