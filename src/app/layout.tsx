@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "StoryCraft AI - 故事工坊",
@@ -14,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className="min-h-screen bg-gray-50 font-sans antialiased">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
