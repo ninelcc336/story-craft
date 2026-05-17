@@ -1,4 +1,11 @@
-export type AdapterId = "gemini" | "dalle" | "doubao" | "nanobanana";
+export type AdapterId =
+  | "doubao"
+  | "qianwen"
+  | "wanxiang"
+  | "jimeng"
+  | "keling"
+  | "gptimage"
+  | "nanobanana";
 
 export interface AgentAdapterDef {
   id: AdapterId;
@@ -13,18 +20,33 @@ export const ADAPTER_LIST: AgentAdapterDef[] = [
     description: "Nano Banana Pro 可用的结构化文本格式",
   },
   {
-    id: "gemini",
-    name: "Gemini Imagen",
-    description: "适用于 Google Gemini 生图模型的提示词",
-  },
-  {
-    id: "dalle",
-    name: "DALL-E 3",
-    description: "适用于 OpenAI DALL-E 3 的英文提示词",
-  },
-  {
     id: "doubao",
-    name: "豆包 / 即梦",
-    description: "适用于字节豆包/即梦 AI 的中文提示词",
+    name: "豆包",
+    description: "适用于字节豆包的中文生图提示词",
+  },
+  {
+    id: "qianwen",
+    name: "千文",
+    description: "适用于千文 (通义千问) 的中文生图提示词",
+  },
+  {
+    id: "wanxiang",
+    name: "万相",
+    description: "适用于阿里万相的中文生图提示词",
+  },
+  {
+    id: "jimeng",
+    name: "即梦",
+    description: "适用于字节即梦 AI 的中文生图提示词",
+  },
+  {
+    id: "keling",
+    name: "可灵",
+    description: "适用于快手可灵的中文生图提示词",
+  },
+  {
+    id: "gptimage",
+    name: "Gpt-image-2",
+    description: "适用于 OpenAI GPT Image 2 的生图提示词",
   },
 ];

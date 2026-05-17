@@ -23,10 +23,13 @@ export async function POST(request: NextRequest) {
     }
 
     const validAdapters: AdapterId[] = [
-      "nanobanana",
-      "gemini",
-      "dalle",
       "doubao",
+      "qianwen",
+      "wanxiang",
+      "jimeng",
+      "keling",
+      "gptimage",
+      "nanobanana",
     ];
     if (!adapter || !validAdapters.includes(adapter)) {
       return NextResponse.json(
