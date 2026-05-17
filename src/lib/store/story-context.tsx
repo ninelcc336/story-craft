@@ -28,6 +28,7 @@ interface WorkspaceState {
   promptError: string | null;
   selectedAdapter: AdapterId;
   adaptedOutput: string | null;
+  selectedPresetId: string | null;
 }
 
 const initialState: WorkspaceState = {
@@ -45,6 +46,7 @@ const initialState: WorkspaceState = {
   promptError: null,
   selectedAdapter: "nanobanana",
   adaptedOutput: null,
+  selectedPresetId: null,
 };
 
 type Action =
@@ -64,6 +66,7 @@ type Action =
   | { type: "SET_PROMPT_ERROR"; payload: string | null }
   | { type: "SET_ADAPTER"; payload: AdapterId }
   | { type: "SET_ADAPTED_OUTPUT"; payload: string | null }
+  | { type: "APPLY_PRESET"; payload: { style: string; colorScheme: string; backgroundStyle: string } }
   | { type: "LOAD_STATE"; payload: WorkspaceState }
   | { type: "RESET" };
 
@@ -125,6 +128,23 @@ function workspaceReducer(
       return { ...state, selectedAdapter: action.payload, adaptedOutput: null };
     case "SET_ADAPTED_OUTPUT":
       return { ...state, adaptedOutput: action.payload };
+    case "APPLY_PRESET": {
+      if (!state.storyboard) return state;
+      const { style, colorScheme, backgroundStyle } = action.payload;
+      return {
+        ...state,
+        selectedPresetId: action.payload.style, // not ideal, but we track via style string
+        storyboard: {
+          ...state.storyboard,
+          comic_info: {
+            ...state.storyboard.comic_info,
+            style,
+            color_scheme: colorScheme,
+            background_style: backgroundStyle,
+          },
+        },
+      };
+    }
     case "LOAD_STATE":
       return { ...action.payload };
     case "RESET":
@@ -342,6 +362,16 @@ export function useStoryActions() {
     [dispatch]
   );
 
+  const applyPreset = useCallback(
+    (style: string, colorScheme: string, backgroundStyle: string) => {
+      dispatch({
+        type: "APPLY_PRESET",
+        payload: { style, colorScheme, backgroundStyle },
+      });
+    },
+    [dispatch]
+  );
+
   const reset = useCallback(() => {
     dispatch({ type: "RESET" });
   }, [dispatch]);
@@ -356,6 +386,7 @@ export function useStoryActions() {
     generatePrompt,
     setAdapter,
     setAdaptedOutput,
+    applyPreset,
     reset,
   };
 }

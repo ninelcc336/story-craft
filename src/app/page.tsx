@@ -13,6 +13,7 @@ import { PanelList } from "@/components/storyboard/panel-list";
 import { StoryboardPreview } from "@/components/storyboard/storyboard-preview";
 import { PromptPreview } from "@/components/prompt/prompt-preview";
 import { ExportPanel } from "@/components/export/export-panel";
+import { StylePresetSelector } from "@/components/prompt/style-preset-selector";
 import { HotspotPanel } from "@/components/hotspot/hotspot-panel";
 import { Button } from "@/components/ui/button";
 import { WritingStyleSelector } from "@/components/story/writing-style-selector";
@@ -200,6 +201,20 @@ export default function Home() {
                   ) : (
                     <StoryboardPreview storyboard={state.storyboard} />
                   )}
+
+                  <Separator />
+
+                  <StylePresetSelector
+                    value={state.selectedPresetId}
+                    onChange={(preset) =>
+                      actions.applyPreset(
+                        preset.style,
+                        preset.colorScheme,
+                        preset.backgroundStyle
+                      )
+                    }
+                    disabled={state.isRestyling}
+                  />
 
                   <Separator />
 
