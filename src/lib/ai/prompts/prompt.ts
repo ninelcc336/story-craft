@@ -8,7 +8,7 @@ export function buildPromptForPanels(storyboard: StoryboardScript): string {
     noRefs: true,
   });
 
-  return `请为以下分镜脚本的每个面板生成一个完整的 AI 生图提示词（image_prompt 字段）。
+  return `请以一名专业的 AI 生图提示词工程师的身份，为以下分镜脚本的每个面板生成完整的生图提示词。
 
 【分镜脚本】
 \`\`\`yaml
@@ -16,14 +16,26 @@ ${yamlStr}
 \`\`\`
 
 【任务】
-为每个 panel 添加一个 image_prompt 字段，该字段需要将以下信息融合为一段流畅的提示词：
-- comic_info 中的 style、color_scheme、background_style
-- comic_info 中的 character（name、appearance、personality）
-- 该 panel 的 scene、action、expression、details
+为每个 panel 添加以下 3 个字段：
 
-每个 image_prompt 应该是可以直接复制粘贴到生图工具（如 Nano Banana、Gemini、DALL-E、豆包等）使用的完整中文描述。
+1. **image_prompt**：正向提示词（中文），融合以下信息为一段流畅的生图提示词：
+   - comic_info 中的 style、color_scheme、background_style
+   - comic_info 中的 character（name、appearance、personality）
+   - 该 panel 的 scene、action、expression、details
+   - 建议画幅比例（如 3:4 竖幅适合小红书，16:9 横幅适合公众号封面）
 
-【输出格式】请在原 YAML 结构的基础上，为每个 panel 添加 image_prompt 字段：
+2. **negative_prompt**：负面提示词，列出不希望出现在画面中的元素：
+   - 一般画质问题（模糊、变形、多余的手指、文字乱码等）
+   - 与当前风格冲突的元素（如手绘风格应排除照片级真实渲染）
+   - 角色一致性相关（如不同外貌特征的角色）
+
+3. **tech_params**：建议的技术参数：
+   - 推荐分辨率（如 1024x1536 for 3:4）
+   - 采样器建议（如 DPM++ 2M Karras）
+   - 步数建议（如 20-30 steps）
+   - CFG scale 建议（如 7-9）
+
+【输出格式】在原 YAML 基础上扩展：
 \`\`\`yaml
 comic_info:
   ...
@@ -35,11 +47,20 @@ panels:
     expression: "..."
     details: "..."
     text: "..."
-    image_prompt: "手绘简笔画风格，暖黄主色调，一个细长圆柱身体、红色火柴头的角色在温暖的手绘街道上行走，表情轻松微笑，背景有简单的路灯和小草..."
+    image_prompt: "手绘简笔画风格，暖黄主色调，一个细长圆柱身体、红色火柴头的角色在温暖的手绘街道上行走..."
+    negative_prompt: "照片级真实渲染，3D渲染，复杂背景，多余手指，文字乱码，水印，签名..."
+    tech_params:
+      resolution: "1024x1536"
+      sampler: "DPM++ 2M Karras"
+      steps: 25
+      cfg_scale: 7.5
   ...
 \`\`\`
 
-只输出完整的 YAML 代码块，保留所有原有字段，不要有任何额外文字。`;
+【重要规则】
+1. image_prompt 要可以直接复制粘贴到生图工具使用
+2. 每个面板的 image_prompt、negative_prompt、tech_params 都要独立生成，不可重复
+3. 只输出完整的 YAML 代码块，不要有任何额外文字`;
 }
 
 export function parsePromptResponse(

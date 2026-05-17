@@ -15,11 +15,14 @@ import { PromptPreview } from "@/components/prompt/prompt-preview";
 import { ExportPanel } from "@/components/export/export-panel";
 import { StylePresetSelector } from "@/components/prompt/style-preset-selector";
 import { HotspotPanel } from "@/components/hotspot/hotspot-panel";
+import { PromptCard } from "@/components/prompt/prompt-card";
+import { BatchExport } from "@/components/export/batch-export";
 import { Button } from "@/components/ui/button";
 import { WritingStyleSelector } from "@/components/story/writing-style-selector";
 import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
 import type { WritingStyle } from "@/types/story";
+import { getPanelKeys } from "@/types/storyboard";
 
 export default function Home() {
   const { state, dispatch } = useStoryContext();
@@ -27,6 +30,7 @@ export default function Home() {
   const [storyStyle, setStoryStyle] = useState<StoryStyle>("搞笑");
   const [panelCount, setPanelCount] = useState(4);
   const [previewTab, setPreviewTab] = useState<"cards" | "export">("cards");
+  const [promptViewTab, setPromptViewTab] = useState<"cards" | "source" | "batch">("cards");
   const [externalTopic, setExternalTopic] = useState<string | null>(null);
 
   const handleGenerate = (topic: string) => {
@@ -268,22 +272,73 @@ export default function Home() {
                   )}
                 </>
               ) : (
-                <>
-                  <PromptPreview
-                    prompt={state.structuredPrompt}
-                    isLoading={state.isGeneratingPrompt}
-                    error={state.promptError}
-                  />
+                <div className="space-y-4">
+                  {/* View tabs */}
+                  <div className="flex items-center gap-2">
+                    {([
+                      { key: "cards", label: "💬 提示词卡片" },
+                      { key: "source", label: "📄 源码导出" },
+                      { key: "batch", label: "📦 批量导出" },
+                    ] as const).map((tab) => (
+                      <button
+                        key={tab.key}
+                        onClick={() => setPromptViewTab(tab.key)}
+                        className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
+                          promptViewTab === tab.key
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-500 hover:text-gray-700"
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
 
-                  <Separator />
+                  {promptViewTab === "cards" && (
+                    <div className="space-y-3">
+                      {getPanelKeys(state.structuredPrompt!).map((key, i) => (
+                        <PromptCard
+                          key={key}
+                          index={i}
+                          label={`第 ${i + 1} 格 · ${state.structuredPrompt!.panels[key].description}`}
+                          panel={state.structuredPrompt!.panels[key]}
+                        />
+                      ))}
+                    </div>
+                  )}
 
-                  {/* C2: Agent Adapter Export */}
-                  <ExportPanel
-                    prompt={state.structuredPrompt}
-                    selectedAdapter={state.selectedAdapter}
-                    onAdapterChange={actions.setAdapter}
-                  />
-                </>
+                  {promptViewTab === "source" && (
+                    <>
+                      <PromptPreview
+                        prompt={state.structuredPrompt}
+                        isLoading={false}
+                        error={null}
+                      />
+                      <Separator />
+                      <ExportPanel
+                        prompt={state.structuredPrompt}
+                        selectedAdapter={state.selectedAdapter}
+                        onAdapterChange={actions.setAdapter}
+                      />
+                    </>
+                  )}
+
+                  {promptViewTab === "batch" && (
+                    <BatchExport prompt={state.structuredPrompt} />
+                  )}
+
+                  {/* Always show adapter export in cards/batch view */}
+                  {promptViewTab !== "source" && (
+                    <>
+                      <Separator />
+                      <ExportPanel
+                        prompt={state.structuredPrompt}
+                        selectedAdapter={state.selectedAdapter}
+                        onAdapterChange={actions.setAdapter}
+                      />
+                    </>
+                  )}
+                </div>
               )}
             </div>
           </StepCard>
