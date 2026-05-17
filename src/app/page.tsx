@@ -8,6 +8,7 @@ import { StepCard } from "@/components/layout/pipeline-layout";
 import { StyleSelector } from "@/components/story/style-selector";
 import { StoryInput } from "@/components/story/story-input";
 import { StoryDisplay } from "@/components/story/story-display";
+import { CharacterEditor } from "@/components/character/character-editor";
 import { Separator } from "@/components/ui/separator";
 
 export default function Home() {
@@ -65,11 +66,37 @@ export default function Home() {
           </div>
         </StepCard>
 
-        {/* Placeholder for subsequent steps */}
+        {/* Step 2: Character Profile */}
         {state.story && (
-          <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center text-sm text-gray-400">
-            分镜脚本生成、角色管理、提示词导出等功能即将接入...
-          </div>
+          <StepCard title="角色档案" step={2} badge="B7">
+            <CharacterEditor
+              character={state.character}
+              onChange={actions.setCharacter}
+              disabled={state.isGeneratingStoryboard}
+            />
+          </StepCard>
+        )}
+
+        {/* Step 3: Storyboard - will be wired in M5 */}
+        {state.story && (
+          <StepCard title="分镜脚本" step={3} badge="B3">
+            <div className="rounded-lg border border-dashed border-gray-200 py-8 text-center text-sm text-gray-400">
+              {state.isGeneratingStoryboard
+                ? "正在生成分镜脚本..."
+                : state.storyboard
+                ? `已生成 ${Object.keys(state.storyboard.panels).length} 个分镜`
+                : "点击下方按钮开始生成分镜脚本"}
+            </div>
+          </StepCard>
+        )}
+
+        {/* Step 4: Prompt & Export - placeholder */}
+        {state.storyboard && (
+          <StepCard title="提示词导出" step={4} badge="C1/C2">
+            <div className="rounded-lg border border-dashed border-gray-200 py-8 text-center text-sm text-gray-400">
+              提示词生成和 Agent 适配导出即将接入...
+            </div>
+          </StepCard>
         )}
       </main>
     </div>
