@@ -234,6 +234,7 @@ export default function Home() {
                     value={state.selectedPresetId}
                     onChange={(preset) =>
                       actions.applyPreset(
+                        preset.id,
                         preset.style,
                         preset.colorScheme,
                         preset.backgroundStyle

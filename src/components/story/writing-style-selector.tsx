@@ -18,7 +18,7 @@ export function WritingStyleSelector({
   return (
     <div>
       <p className="mb-2 text-sm text-gray-500">
-        切换文案风格（仅修改分镜中的 text 字段，不影响场景和动作描述）
+        切换文案风格（仅修改文案 (text) 字段，不影响场景和动作描述）
       </p>
       <div className="flex flex-wrap gap-2">
         {WRITING_STYLES.map((s) => (

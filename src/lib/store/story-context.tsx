@@ -66,7 +66,7 @@ type Action =
   | { type: "SET_PROMPT_ERROR"; payload: string | null }
   | { type: "SET_ADAPTER"; payload: AdapterId }
   | { type: "SET_ADAPTED_OUTPUT"; payload: string | null }
-  | { type: "APPLY_PRESET"; payload: { style: string; colorScheme: string; backgroundStyle: string } }
+  | { type: "APPLY_PRESET"; payload: { presetId: string; style: string; colorScheme: string; backgroundStyle: string } }
   | { type: "LOAD_STATE"; payload: WorkspaceState }
   | { type: "RESET" };
 
@@ -129,11 +129,14 @@ function workspaceReducer(
     case "SET_ADAPTED_OUTPUT":
       return { ...state, adaptedOutput: action.payload };
     case "APPLY_PRESET": {
-      if (!state.storyboard) return state;
-      const { style, colorScheme, backgroundStyle } = action.payload;
+      const { presetId, style, colorScheme, backgroundStyle } = action.payload;
+      if (!state.storyboard) {
+        // 分镜尚未生成，先记住预设选择，后续生成时自动应用
+        return { ...state, selectedPresetId: presetId };
+      }
       return {
         ...state,
-        selectedPresetId: action.payload.style, // not ideal, but we track via style string
+        selectedPresetId: presetId,
         storyboard: {
           ...state.storyboard,
           comic_info: {
@@ -363,10 +366,10 @@ export function useStoryActions() {
   );
 
   const applyPreset = useCallback(
-    (style: string, colorScheme: string, backgroundStyle: string) => {
+    (presetId: string, style: string, colorScheme: string, backgroundStyle: string) => {
       dispatch({
         type: "APPLY_PRESET",
-        payload: { style, colorScheme, backgroundStyle },
+        payload: { presetId, style, colorScheme, backgroundStyle },
       });
     },
     [dispatch]

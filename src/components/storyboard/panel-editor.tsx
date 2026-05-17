@@ -22,7 +22,7 @@ const FIELD_CONFIG: { field: string; label: string; rows: number }[] = [
   { field: "action", label: "角色动作", rows: 1 },
   { field: "expression", label: "角色表情", rows: 1 },
   { field: "details", label: "视觉细节", rows: 2 },
-  { field: "text", label: "文案/对话", rows: 2 },
+  { field: "text", label: "text (文案)", rows: 2 },
 ];
 
 export function PanelEditor({ panel, onChange, onClose }: PanelEditorProps) {

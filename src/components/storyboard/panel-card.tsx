@@ -24,7 +24,7 @@ const FIELD_LABELS: Record<string, string> = {
   action: "动作",
   expression: "表情",
   details: "细节",
-  text: "文案",
+  text: "text (文案)",
 };
 
 export function PanelCard({ index, label, panel, onEdit }: PanelCardProps) {
@@ -66,7 +66,7 @@ export function PanelCard({ index, label, panel, onEdit }: PanelCardProps) {
       </div>
 
       <div className="mt-2 rounded-md bg-amber-50 px-3 py-2">
-        <span className="text-[10px] font-medium text-amber-600">💬 文案</span>
+        <span className="text-[10px] font-medium text-amber-600">💬 text (文案)</span>
         <p className="text-sm text-gray-800">{panel.text}</p>
       </div>
     </div>
