@@ -43,11 +43,6 @@ export function SettingsDialog({ open, onClose }: SettingsDialogProps) {
     }, 500);
   };
 
-  const models: Record<string, string[]> = {
-    claude: ["claude-sonnet-4-6", "claude-opus-4-7", "claude-haiku-4-5"],
-    openai: ["gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo"],
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 pt-20">
       <div className="w-full max-w-lg rounded-xl bg-white shadow-2xl">
@@ -82,7 +77,6 @@ export function SettingsDialog({ open, onClose }: SettingsDialogProps) {
                     setSettings({
                       ...settings,
                       provider: p,
-                      model: models[p][0],
                     });
                   }}
                   className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
@@ -134,21 +128,18 @@ export function SettingsDialog({ open, onClose }: SettingsDialogProps) {
             <label className="mb-1.5 block text-sm font-medium text-gray-700">
               模型
             </label>
-            <div className="flex gap-2">
-              {models[settings.provider].map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setSettings({ ...settings, model: m })}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
-                    settings.model === m
-                      ? "bg-gray-900 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  {m}
-                </button>
-              ))}
-            </div>
+            <Input
+              type="text"
+              value={settings.model}
+              onChange={(e) =>
+                setSettings({ ...settings, model: e.target.value })
+              }
+              placeholder="claude-sonnet-4-6"
+              className="font-mono text-sm"
+            />
+            <p className="mt-1 text-xs text-gray-400">
+              输入模型名称，例如 claude-sonnet-4-6 / gpt-4o / deepseek-v3 等
+            </p>
           </div>
 
           <Separator />
